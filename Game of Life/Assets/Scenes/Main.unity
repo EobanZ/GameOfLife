@@ -250,9 +250,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fieldSizeX: 100
-  fieldSizeY: 50
+  field: {fileID: 943757490}
   cellPrefab: {fileID: 1383896114390432, guid: 50606df4cfa422744afdfe0b977639c5, type: 2}
-  Field: {fileID: 943757490}
 --- !u!4 &2077196752
 Transform:
   m_ObjectHideFlags: 0
