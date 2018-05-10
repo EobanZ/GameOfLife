@@ -1,0 +1,79 @@
+<Project>
+  <Name>Unbenannt</Name>
+  <ProjectItem type="NClass.DiagramEditor.ClassDiagram.Diagram" assembly="NClass.DiagramEditor, Version=2.4.1823.0, Culture=neutral, PublicKeyToken=null">
+    <Name>Unbenannt</Name>
+    <Language>CSharp</Language>
+    <Entities>
+      <Entity type="Class">
+        <Name>Zelle</Name>
+        <Access>Public</Access>
+        <Location left="456" top="196" />
+        <Size width="162" height="230" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">bool isAlive</Member>
+        <Member type="Field">bool nächsterZustand</Member>
+        <Member type="Field">float lifeTime</Member>
+        <Member type="Field">Color deadColor</Member>
+        <Member type="Field">Color aliveColor</Member>
+        <Member type="Field">Color OldestCellColor</Member>
+        <Member type="Method">public void UpdateCell(float deltaTime)</Member>
+        <Member type="Method">private int CountLivingNeighbours()</Member>
+        <Member type="Method">private void ChooseNextState(int livingNeighbours)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>GameManager&lt;Singelston&gt;</Name>
+        <Access>Public</Access>
+        <Location left="40" top="36" />
+        <Size width="162" height="199" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">float refreshTime</Member>
+        <Member type="Field">int fieldSizeX</Member>
+        <Member type="Field">int fieldSizeY</Member>
+        <Member type="Field">public GameObject[,] cells</Member>
+        <Member type="Method">public void Update()</Member>
+        <Member type="Method">public void BuildField()</Member>
+        <Member type="Method">public void UpdateField()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>Monobehaviour</Name>
+        <Access>Public</Access>
+        <Location left="456" top="21" />
+        <Size width="162" height="216" />
+        <Collapsed>True</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>Array2D</Name>
+        <Access>Public</Access>
+        <Location left="271" top="104" />
+        <Size width="162" height="216" />
+        <Collapsed>True</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+    </Entities>
+    <Relationships>
+      <Relationship type="Generalization" first="0" second="2">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Association" first="1" second="3">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+        <StartMultiplicity>1</StartMultiplicity>
+        <EndMultiplicity>1</EndMultiplicity>
+      </Relationship>
+      <Relationship type="Association" first="3" second="0">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+        <StartMultiplicity>1</StartMultiplicity>
+        <EndMultiplicity>1..*</EndMultiplicity>
+      </Relationship>
+    </Relationships>
+  </ProjectItem>
+</Project>
