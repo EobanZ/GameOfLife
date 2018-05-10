@@ -6,7 +6,8 @@ using UnityEngine.Tilemaps;
 public class GameManager : GenericSingletonClass<GameManager> {
 
     private static float timer = 0;
-    private float refreshTime = 1;   
+    private float refreshTime = 1/5;
+    private bool fieldIsReady = false;
     private Cell[,] cells;
     private Camera camera;
     private int fieldSizeY;
@@ -17,8 +18,6 @@ public class GameManager : GenericSingletonClass<GameManager> {
     public GameObject CellPrefab { get { return cellPrefab; } }
     public GameObject Field { get { return field; } }
     public Cell[,] Cells { get { return cells; } }
-    public int FieldSizeX { get { return fieldSizeX; } }
-    public int FieldSizeY { get { return fieldSizeY; } }
     public Vector2Int FieldSize { get { return new Vector2Int(fieldSizeX, fieldSizeY); } }
 
 
@@ -33,11 +32,10 @@ public class GameManager : GenericSingletonClass<GameManager> {
 	
 	void Update () {
         timer += Time.deltaTime;
-        if(timer > refreshTime)
+        if(timer > refreshTime && fieldIsReady)
         {
-            StartCoroutine(UpdateField());
+            UpdateField();
             timer = 0;
-            firststart = true;
         }
         
 	}
@@ -67,15 +65,14 @@ public class GameManager : GenericSingletonClass<GameManager> {
                 }
             }
         }
+        fieldIsReady = true;
         yield return null;
     }
 
-    static bool firststart = false;
     //Updates each cell in the Field
-    IEnumerator UpdateField()
+    void UpdateField()
     {
-        if (!firststart)
-            yield return null;
+        
  
         for (int y = 0; y < fieldSizeY; y++)
         {
@@ -85,7 +82,6 @@ public class GameManager : GenericSingletonClass<GameManager> {
                
             }
         }
-        yield return null;
     }
 
     

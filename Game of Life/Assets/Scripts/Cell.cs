@@ -9,7 +9,6 @@ public class Cell : MonoBehaviour {
     float lifeTime = 0; //the amount of seconds this cell is alive
     Vector2Int position;
     Vector2Int fieldSize;
-    int livingNeighbours;
     [SerializeField] float maxlifeTime = 10f; //After this amount of seconds the Cell is the gradientColor
     [SerializeField] Color aliveColor = Color.white;
     [SerializeField] Color deadColor = Color.black;
@@ -34,7 +33,7 @@ public class Cell : MonoBehaviour {
        
     }
 
-    IEnumerator CountLivingNeighbors()
+    private int CountLivingNeighbors()
     {
         // The number of living neighbors
         int value = 0;
@@ -52,13 +51,13 @@ public class Cell : MonoBehaviour {
             }
         }
         //Substract 1 if this Cell is alive since we counted it as a neighbor
-        livingNeighbours = value - (this.IsAlive == true ? 1 : 0);
-        yield return null;
+        return  value - (this.IsAlive == true ? 1 : 0);
+        
     }
 
     private bool ChooseNextState(int livingNeighbors)
     {
-        return isAlive == true && (livingNeighbours == 2 || livingNeighbours == 3) || isAlive == false && livingNeighbours == 3;
+        return isAlive == true && (livingNeighbors == 2 || livingNeighbors == 3) || isAlive == false && livingNeighbors == 3;
   
     }
 
@@ -102,8 +101,8 @@ public class Cell : MonoBehaviour {
 
     public void UpdateCell()
     {
-        StartCoroutine(CountLivingNeighbors());
-        nextState = ChooseNextState(livingNeighbours);
+ 
+        nextState = ChooseNextState(CountLivingNeighbors());
         ApplyNextGeneration();
         
     }
