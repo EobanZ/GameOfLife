@@ -52,10 +52,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 228db6a7e5b8839438748534088a5124, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxlifeTime: 10
-  aliveColor: {r: 1, g: 1, b: 1, a: 1}
-  deadColor: {r: 0, g: 0, b: 0, a: 1}
-  gradientColor: {r: 1, g: 0, b: 0, a: 1}
+  CellScriptableObject: {fileID: 11400000, guid: 00b35179045e2184f939bb573c98e610,
+    type: 2}
 --- !u!212 &212808147953399422
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -249,9 +249,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c26a47f6c7f45e4cb90861d5d7620e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  refreshTime: 15
   fieldSizeX: 100
   field: {fileID: 943757490}
   cellPrefab: {fileID: 1383896114390432, guid: 50606df4cfa422744afdfe0b977639c5, type: 2}
+  cellSriptableObject: {fileID: 11400000, guid: 00b35179045e2184f939bb573c98e610,
+    type: 2}
 --- !u!4 &2077196752
 Transform:
   m_ObjectHideFlags: 0

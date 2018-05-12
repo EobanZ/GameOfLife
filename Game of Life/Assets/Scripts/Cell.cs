@@ -6,13 +6,15 @@ public class Cell : MonoBehaviour {
 
     bool? isAlive = true;
     bool? nextState = null;
-    float lifeTime = 0; //the amount of seconds this cell is alive
+    float lifeTime = 0; 
     Vector2Int position;
     Vector2Int fieldSize;
-    [SerializeField] float maxlifeTime = 10f; //After this amount of seconds the Cell is the gradientColor
-    [SerializeField] Color aliveColor = Color.white;
-    [SerializeField] Color deadColor = Color.black;
-    [SerializeField] Color gradientColor = Color.red;
+    float maxlifeTime; 
+    Color aliveColor;
+    Color deadColor;
+    Color gradientColor;
+    SpriteRenderer spriteRenderer;
+    [SerializeField] CellSO CellScriptableObject;
 
     public bool? IsAlive { get { return isAlive; } }
 
@@ -20,7 +22,16 @@ public class Cell : MonoBehaviour {
 
     private void Start()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
         fieldSize = GameManager.Instance.FieldSize;
+
+        aliveColor = CellScriptableObject.m_aliveColor;
+        deadColor = CellScriptableObject.m_deadColor;
+        gradientColor = CellScriptableObject.m_gradientColor;
+        maxlifeTime = CellScriptableObject.m_maxLifetime;
+        spriteRenderer.sprite = CellScriptableObject.m_sprite;
+
+        
         UpdateSprites(); //Updates the Sprites Colors once the game is started
     }
 
@@ -65,11 +76,11 @@ public class Cell : MonoBehaviour {
     {
         if (isAlive == false)
         {
-            GetComponent<SpriteRenderer>().color = deadColor;    
+            spriteRenderer.color = deadColor;    
         }
         else
         {
-            GetComponent<SpriteRenderer>().color = Color.Lerp(aliveColor, gradientColor, Mathf.Clamp01(lifeTime/maxlifeTime));
+            spriteRenderer.color = Color.Lerp(aliveColor, gradientColor, Mathf.Clamp01(lifeTime/maxlifeTime));
         }
         
     }

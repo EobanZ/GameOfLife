@@ -6,7 +6,7 @@ using UnityEngine.Tilemaps;
 public class GameManager : GenericSingletonClass<GameManager> {
 
     private static float timer = 0;
-    private float refreshTime = 1/5;
+    [SerializeField]private float refreshTime = 5;
     private bool fieldIsReady = false;
     private Cell[,] cells;
     private Camera camera;
@@ -32,7 +32,7 @@ public class GameManager : GenericSingletonClass<GameManager> {
 	
 	void Update () {
         timer += Time.deltaTime;
-        if(timer > refreshTime && fieldIsReady)
+        if(timer > (float)1/refreshTime && fieldIsReady)
         {
             UpdateField();
             timer = 0;
