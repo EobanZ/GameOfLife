@@ -11,8 +11,16 @@ public class Map
 
     public string Name { get { return name; } }
 
-    Map(bool[,] Field, int width, int height) { createMap(Field,width,height); }
+    public Map(bool[,] Field, int width, int height, string mname)
+    {
+        createMap(Field,width,height, mname);
+    }
 
-    void createMap(bool[,] Field, int width, int height) { this.field = Field; this.width = width; this.height = height; }
+    void createMap(bool[,] Field, int width, int height, string mname)
+    {
+        this.field = Field;
+        this.width = width;
+        this.height = height;
+        this.name = mname; }
 
 }
