@@ -44,6 +44,9 @@ public class MapEditor : GenericSingletonClass<MapEditor> {
                 //MoveCamera
             }
         }
+
+        //Hide Window 
+        //Show Toolbar
     }
 
  
