@@ -11,4 +11,8 @@ public class CellSO : ScriptableObject {
     [SerializeField] public Color m_deadColor;
     [SerializeField] public Color m_gradientColor;
     [SerializeField] public int fps;
+    [SerializeField] public int minCellsInX;
+    [SerializeField] public int maxCellsInX;
+    [SerializeField] public int minFPS;
+    [SerializeField] public int maxFPS;
 }

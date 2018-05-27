@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using TMPro;
 using System;
 
@@ -14,14 +15,21 @@ public class MapEditor : GenericSingletonClass<MapEditor> {
     [SerializeField] GameObject CreatePanel;
     [SerializeField] GameObject ToolbarPanel;
     [SerializeField] GameObject SavePanel;
+    [SerializeField] Slider cellsInXSlider;
+    [SerializeField] CellSO cellProperties;
     bool[,] field;
     int fieldX, fieldY;
     string fieldName;
     bool pencil = true;
 
+    private void Start()
+    {
+        UpdateXCellsValueFromFloat(100);
+    }
+
     private bool CheckInputfields()
     {
-        if (nameInputfield.text == "" || cellsInXInputfield.text == "" || int.Parse(cellsInXInputfield.text) < 4 || int.Parse(cellsInXInputfield.text) > 300)
+        if (nameInputfield.text == "" || cellsInXInputfield.text == "" || int.Parse(cellsInXInputfield.text) < cellProperties.minCellsInX || int.Parse(cellsInXInputfield.text) > cellProperties.maxCellsInX)
             return false;
         else
             return true;
@@ -69,15 +77,6 @@ public class MapEditor : GenericSingletonClass<MapEditor> {
         Camera.main.orthographicSize = fieldSizeX >= fieldSizeY ? fieldSizeY / 2 : fieldSizeX / 2;
     }
 
-    public void CheckIfNumber(string s)
-    {
-        int numberInteger;
-        if (int.TryParse(s, out numberInteger))
-            return;
-        else
-            cellsInXInputfield.text = cellsInXInputfield.text.Remove(cellsInXInputfield.text.Length-1);
-    }
-
     public void ActivatePencil()
     {
         pencil = true;
@@ -99,7 +98,24 @@ public class MapEditor : GenericSingletonClass<MapEditor> {
     {
         SceneManager.LoadScene(0);
     }
-   
+
+    public void UpdateXCellsValueFromFloat(float value)
+    {
+        cellsInXSlider.value = (int)value;
+        cellsInXInputfield.text = value.ToString();
+    }
+
+    public void UpdateXCellsValueFromString(string value)
+    {
+        int intValue = int.Parse(value);
+
+        intValue = intValue > cellProperties.maxCellsInX ? cellProperties.maxCellsInX : intValue;
+        intValue = intValue < cellProperties.minCellsInX ? cellProperties.minCellsInX : intValue;
+
+        cellsInXSlider.value = intValue;
+        cellsInXInputfield.text = intValue.ToString();
+    }
+
     void Update()
     {
         if (Input.GetMouseButton(0))
