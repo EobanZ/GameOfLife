@@ -14,6 +14,7 @@ public class GameManager : GenericSingletonClass<GameManager> {
     [SerializeField] private int fieldSizeX; //<- später über UI setzten
     [SerializeField] private GameObject field;
     [SerializeField] private GameObject cellPrefab;
+    [SerializeField] private MapContainerSO maps;
 
     public GameObject CellPrefab { get { return cellPrefab; } }
     public GameObject Field { get { return field; } }
@@ -22,12 +23,22 @@ public class GameManager : GenericSingletonClass<GameManager> {
 
 
     void Start () {
+        if(maps.ChosenMap != null)
+        {
+            fieldSizeX = maps.ChosenMap.Width;
+            fieldSizeY = maps.ChosenMap.Height;
+        }
+        else
+        {
+            fieldSizeX = maps.randomWidth;
+            fieldSizeY = Mathf.RoundToInt(fieldSizeX * (1 / Camera.main.aspect));
+        }
+        
         camera = Camera.main; 
-        fieldSizeY = Mathf.RoundToInt(fieldSizeX * (1 / camera.aspect));
         cells = new Cell[fieldSizeX,fieldSizeY];
 
         PositionCamera();
-        StartCoroutine(BuildFieldCR(true));
+        StartCoroutine(BuildFieldCR());
 	}
 	
 	void Update () {
@@ -47,7 +58,7 @@ public class GameManager : GenericSingletonClass<GameManager> {
         camera.orthographicSize = fieldSizeX >= fieldSizeY? fieldSizeY/2 : fieldSizeX/2 ;
     }
 
-    IEnumerator BuildFieldCR(bool random)
+    IEnumerator BuildFieldCR()
     {
         for (int y = 0; y < fieldSizeY; y++)
         {
@@ -57,11 +68,15 @@ public class GameManager : GenericSingletonClass<GameManager> {
                 Cell c = go.GetComponent<Cell>();
                 c.SetFieldPosition(x, y);
                 cells[x, y] = c;
-                if (random)
+                if (maps.ChosenMap == null) //If no map is chosen, build a random field
                 {
                     int i = (int)Random.Range(0, 1.99f);
                     bool b = i == 0 ? false : true;
                     go.GetComponent<Cell>().SetAlive(b);
+                }
+                else
+                {
+                    go.GetComponent<Cell>().SetAlive(maps.ChosenMap.Field[x, y]);
                 }
             }
         }
@@ -78,8 +93,17 @@ public class GameManager : GenericSingletonClass<GameManager> {
         {
             for (int x = 0; x < fieldSizeX; x++)
             {
-                cells[x, y].UpdateCell();
+                cells[x, y].GetNextState();
                
+            }
+        }
+
+        for (int y = 0; y < fieldSizeY; y++)
+        {
+            for (int x = 0; x < fieldSizeX; x++)
+            {
+                cells[x, y].ApplyNextGeneration();
+
             }
         }
     }

@@ -31,7 +31,6 @@ public class Cell : MonoBehaviour {
         maxlifeTime = CellScriptableObject.m_maxLifetime;
         spriteRenderer.sprite = CellScriptableObject.m_sprite;
 
-        
         UpdateSprites(); //Updates the Sprites Colors once the game is started
     }
 
@@ -85,7 +84,7 @@ public class Cell : MonoBehaviour {
         
     }
 
-    private void ApplyNextGeneration()
+    public void ApplyNextGeneration()
     {
         if(nextState != null)
         {
@@ -110,11 +109,11 @@ public class Cell : MonoBehaviour {
             isAlive = false;
     }
 
-    public void UpdateCell()
+    public void GetNextState()
     {
  
         nextState = ChooseNextState(CountLivingNeighbors());
-        ApplyNextGeneration();
+        
         
     }
 

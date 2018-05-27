@@ -6,18 +6,18 @@ public class MapCell : MonoBehaviour {
     bool isChosen;
     Vector2Int position;
 
-	public void ToggleActiveInMapEditor()
+    public Vector2Int Position { get { return position; } set { position = value; } }
+
+    public void ChangeColor(bool b)
     {
-        MapEditor.Instance.ToggleCellAt(position);
+        if (b)
+        {
+            GetComponent<SpriteRenderer>().color = Color.white;
+        }
+        else
+        {
+            GetComponent<SpriteRenderer>().color = Color.black;
+        }
     }
 
-    public void ActivateCellInMapEditor()
-    {
-        MapEditor.Instance.ActivateCellAt(position);
-    }
-
-    public void DeactivateCellInMapEditor()
-    {
-        MapEditor.Instance.DeactivateCellAt(position);
-    }
 }
