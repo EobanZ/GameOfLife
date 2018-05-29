@@ -24,6 +24,7 @@ public class Launcher : GenericSingletonClass<Launcher> {
 
     // Use this for initialization
     void Start () {
+        
 
         mapliste.Clear();
         mapsDropdown.ClearOptions();

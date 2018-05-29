@@ -8,7 +8,7 @@ using UnityEngine;
 public class MapContainerSO : ScriptableObject
 {
     [SerializeField, HideInInspector]DictionaryOfMaps maps;
-    [SerializeField]private Map chosenMap;
+    [SerializeField, HideInInspector]private Map chosenMap;
 
     public DictionaryOfMaps Maps { get { return maps; } } 
     public Map ChosenMap { get { return chosenMap; } }
