@@ -17,6 +17,7 @@ public class Map
     {
         get
         {
+            //1D Array to 2D
             bool[,] fld = new bool[width, height];
             for (int y = 0; y < height; y++)
             {
@@ -33,6 +34,7 @@ public class Map
     public Map(bool[,] Field, int width, int height, string mname)
     {
         createMap(Field,width,height, mname);
+        
     }
 
     void createMap(bool[,] Field, int width, int height, string mname)
@@ -42,7 +44,7 @@ public class Map
         this.height = height;
         this.name = mname;
         this.field = new bool[width * height];
-
+        //2D array to 1D
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)

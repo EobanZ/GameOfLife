@@ -15,4 +15,6 @@ public class CellSO : ScriptableObject {
     [SerializeField] public int maxCellsInX;
     [SerializeField] public int minFPS;
     [SerializeField] public int maxFPS;
+
+    
 }

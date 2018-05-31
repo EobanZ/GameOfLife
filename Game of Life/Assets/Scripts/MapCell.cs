@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MapCell : MonoBehaviour {
-    bool isChosen;
+
     Vector2Int position;
 
     public Vector2Int Position { get { return position; } set { position = value; } }

@@ -14,7 +14,7 @@ public class Cell : MonoBehaviour {
     Color deadColor;
     Color gradientColor;
     SpriteRenderer spriteRenderer;
-    [SerializeField] CellSO CellScriptableObject;
+    [SerializeField] CellSO CellScriptableObject; //ref to the Cell Properties Scriptable Object to get the settings
 
     public bool? IsAlive { get { return isAlive; } }
 
@@ -25,6 +25,7 @@ public class Cell : MonoBehaviour {
         spriteRenderer = GetComponent<SpriteRenderer>();
         fieldSize = GameManager.Instance.FieldSize;
 
+        //Get the settings from the Scriptable Object
         aliveColor = CellScriptableObject.m_aliveColor;
         deadColor = CellScriptableObject.m_deadColor;
         gradientColor = CellScriptableObject.m_gradientColor;
@@ -36,6 +37,7 @@ public class Cell : MonoBehaviour {
 
     private void Update()
     {
+        //update the lifeTime for GradientColor
         if(isAlive == true)
             lifeTime += Time.deltaTime;
         else
@@ -43,6 +45,10 @@ public class Cell : MonoBehaviour {
        
     }
 
+    /// <summary>
+    /// returns the number of living neighbors
+    /// </summary>
+    /// <returns></returns>
     private int CountLivingNeighbors()
     {
         // The number of living neighbors
@@ -65,6 +71,11 @@ public class Cell : MonoBehaviour {
         
     }
 
+    /// <summary>
+    /// Returns the State for the next generation depending on the numbers of living neighbors
+    /// </summary>
+    /// <param name="livingNeighbors"></param>
+    /// <returns>true if alive</returns>
     private bool ChooseNextState(int livingNeighbors)
     {
         return isAlive == true && (livingNeighbors == 2 || livingNeighbors == 3) || isAlive == false && livingNeighbors == 3;
@@ -84,29 +95,34 @@ public class Cell : MonoBehaviour {
         
     }
 
-    public void ApplyNextGeneration()
-    {
-        if(nextState != null)
-        {
-            isAlive = nextState;
-            nextState = null;
-            
-        }
-        UpdateSprites();
-    }
 
 #endregion
 
 #region public methods
 
-    public void SetFieldPosition(int x, int y) { position = new Vector2Int(x, y);}
-
-    public void SetAlive(bool b)
+    public void ApplyNextGeneration()
     {
-        if (b)
-            isAlive = true;
-        else
-            isAlive = false;
+        if (nextState != null)
+        {
+            isAlive = nextState;
+            nextState = null;
+
+        }
+        UpdateSprites();
+    }
+
+    public void SetFieldPosition(int x, int y)
+    {
+        position = new Vector2Int(x, y);
+    }
+
+    /// <summary>
+    /// Sets the cell alive or dead
+    /// </summary>
+    /// <param name="b">true -> alive, false -> dead</param>
+    public void SetAlive(bool b)
+    {      
+            isAlive = b;   
     }
 
     public void GetNextState()

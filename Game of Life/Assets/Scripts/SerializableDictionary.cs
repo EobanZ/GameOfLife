@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Had to Create this class because dictionary's aren't serializable in unity
+/// Had to Create this class because dictionarys aren't serializable in unity
 /// </summary>
 /// <typeparam name="TKey"></typeparam>
 /// <typeparam name="TValue"></typeparam>

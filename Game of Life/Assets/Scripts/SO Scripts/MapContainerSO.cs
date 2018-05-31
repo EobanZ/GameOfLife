@@ -7,22 +7,24 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewMapContainer", menuName = "MapContainer")]
 public class MapContainerSO : ScriptableObject
 {
-    [SerializeField, HideInInspector]DictionaryOfMaps maps;
+    [SerializeField, HideInInspector]private DictionaryOfMaps maps; //DictionaryOfMaps because its serializable
     [SerializeField, HideInInspector]private Map chosenMap;
 
     public DictionaryOfMaps Maps { get { return maps; } } 
     public Map ChosenMap { get { return chosenMap; } }
 
-    public int randomWidth { get; set; }
+    public int randomWidth { get; set; } //the CellsInX when "Random" is selected
 
     private void OnEnable()
     {
+
         if(maps == null)
         {
             maps = new DictionaryOfMaps();
         }
-        //maps.Clear();
+        
     }
+
     public void AddMap(Map m)
     {
         if(!maps.ContainsKey(m.Name))
@@ -36,7 +38,6 @@ public class MapContainerSO : ScriptableObject
         if (maps.ContainsKey(mapName))
             maps.Remove(mapName);
     }
-
 
     public void SetChosenMap(string name)
     {

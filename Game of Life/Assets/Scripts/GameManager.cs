@@ -9,18 +9,22 @@ public class GameManager : GenericSingletonClass<GameManager> {
 
     private static float timer = 0;  
     private bool fieldIsReady = false;
-    private Cell[,] cells;
+    private Cell[,] cells; //refs to the instantiated cells will be stored here
     private Camera camera;
     private int fieldSizeY;
-    bool simulate = false;
-    [SerializeField] private float refreshTime = 5;
-    [SerializeField] private GameObject toolPanel;
-    [SerializeField] private TMPro.TMP_Text fpsText;
-    [SerializeField] private int fieldSizeX; //<- später über UI setzten
-    [SerializeField] private GameObject field;
-    [SerializeField] private GameObject cellPrefab;
-    [SerializeField] private MapContainerSO maps;
-    [SerializeField] private CellSO cellProperties;
+    private int fieldSizeX;
+    private bool simulate = false;
+    private float refreshTime; //fps
+    
+    [SerializeField] private GameObject toolPanel; //ref to the Tool Panel
+    [SerializeField] private TMPro.TMP_Text fpsText; //ref to the FPS text  
+    [SerializeField] private GameObject field; //ref to the field
+    [SerializeField] private GameObject cellPrefab; //the Prefab used for the Cells
+    [SerializeField] private MapContainerSO maps; //ref to the MapContainer ScriptableObject
+    [SerializeField] private CellSO cellProperties; //ref tho the Cell Properties ScriptableObject
+
+    public Sprite PlayButtonIcon, PauseButtonIcon;
+    public Image PlayPauseButtonImage;
 
     public GameObject CellPrefab { get { return cellPrefab; } }
     public GameObject Field { get { return field; } }
@@ -28,7 +32,10 @@ public class GameManager : GenericSingletonClass<GameManager> {
     public Vector2Int FieldSize { get { return new Vector2Int(fieldSizeX, fieldSizeY); } }
 
 
-    void Start () {
+#region Private Methods 
+    private void Start ()
+    {
+        //If a Map was chosen, get the Maps settings. Else use the randomWith and calculate Y Cells
         if(maps.ChosenMap != null)
         {
             fieldSizeX = maps.ChosenMap.Width;
@@ -38,6 +45,7 @@ public class GameManager : GenericSingletonClass<GameManager> {
         {
             fieldSizeX = maps.randomWidth;
             fieldSizeY = Mathf.RoundToInt(fieldSizeX * (1 / Camera.main.aspect));
+            
         }
         
         camera = Camera.main; 
@@ -50,8 +58,10 @@ public class GameManager : GenericSingletonClass<GameManager> {
         StartCoroutine(BuildFieldCR());
 	}
 	
-	void Update () {
+	private void Update () {
         timer += Time.deltaTime;
+
+        //updates the field depending on the framerate. field has to be ready and simulate flag has to be true
         if(timer > (float)1/refreshTime && fieldIsReady && simulate)
         {
             UpdateField();
@@ -60,6 +70,9 @@ public class GameManager : GenericSingletonClass<GameManager> {
         
 	}
 
+    /// <summary>
+    /// Positions the camera depending on the width and height of the field
+    /// </summary>
     void PositionCamera()
     {
           
@@ -67,23 +80,27 @@ public class GameManager : GenericSingletonClass<GameManager> {
         camera.orthographicSize = fieldSizeX >= fieldSizeY? fieldSizeY/2 : fieldSizeX/2 ;
     }
 
+    /// <summary>
+    /// Coroutine to build the field from a map or random
+    /// </summary>
+    /// <returns></returns>
     IEnumerator BuildFieldCR()
     {
         for (int y = 0; y < fieldSizeY; y++)
         {
             for (int x = 0; x < fieldSizeX; x++)
             {
-                GameObject go = (GameObject)Instantiate(cellPrefab, new Vector3(x, y, 0), Quaternion.identity, field.transform);
-                Cell c = go.GetComponent<Cell>();
-                c.SetFieldPosition(x, y);
-                cells[x, y] = c;
+                GameObject go = (GameObject)Instantiate(cellPrefab, new Vector3(x, y, 0), Quaternion.identity, field.transform); //create cell gameobject in the scene as child of the field
+                Cell c = go.GetComponent<Cell>(); //get the Cell Script
+                c.SetFieldPosition(x, y); //tell the cell its position
+                cells[x, y] = c; //write a reference to the created cell in our array
                 if (maps.ChosenMap == null) //If no map is chosen, build a random field
                 {
                     int i = (int)Random.Range(0, 1.99f);
                     bool b = i == 0 ? false : true;
                     go.GetComponent<Cell>().SetAlive(b);
                 }
-                else
+                else //Build the chosen Map
                 {
                     go.GetComponent<Cell>().SetAlive(maps.ChosenMap.Field[x, y]);
                 }
@@ -93,11 +110,13 @@ public class GameManager : GenericSingletonClass<GameManager> {
         yield return null;
     }
 
-    //Updates each cell in the Field
+    /// <summary>
+    /// Updates each cell in the Field
+    /// </summary>
     void UpdateField()
     {
         
- 
+        //Get the next state for each cell
         for (int y = 0; y < fieldSizeY; y++)
         {
             for (int x = 0; x < fieldSizeX; x++)
@@ -107,6 +126,7 @@ public class GameManager : GenericSingletonClass<GameManager> {
             }
         }
 
+        //Apply the next state
         for (int y = 0; y < fieldSizeY; y++)
         {
             for (int x = 0; x < fieldSizeX; x++)
@@ -117,6 +137,10 @@ public class GameManager : GenericSingletonClass<GameManager> {
         }
     }
 
+    #endregion
+
+#region public Methods
+
     public void ToggleSimulate()
     {
         simulate = !simulate;
@@ -125,10 +149,12 @@ public class GameManager : GenericSingletonClass<GameManager> {
         if (simulate)
         {
             toolPanel.SetActive(false);
+            PlayPauseButtonImage.sprite = PauseButtonIcon; 
         }
         else
         {
             toolPanel.SetActive(true);
+            PlayPauseButtonImage.sprite = PlayButtonIcon;
         }
     }
 
@@ -154,5 +180,6 @@ public class GameManager : GenericSingletonClass<GameManager> {
         refreshTime--;
         fpsText.text = "FPS: " + refreshTime.ToString();
     }
-    
+
+#endregion
 }
